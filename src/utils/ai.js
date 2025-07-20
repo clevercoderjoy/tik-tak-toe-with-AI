@@ -51,6 +51,7 @@ const minimax = (board, depth, isMaximizing, alpha, beta, ai, human) => {
       newBoard[move] = ai;
       const score = minimax(newBoard, depth + 1, false, alpha, beta, ai, human);
       bestScore = Math.max(bestScore, score);
+      alpha = Math.max(bestScore, score);
       if (beta <= alpha) break;
     }
     return bestScore;
@@ -60,7 +61,8 @@ const minimax = (board, depth, isMaximizing, alpha, beta, ai, human) => {
       const newBoard = [...board];
       newBoard[move] = human;
       const score = minimax(newBoard, depth + 1, true, alpha, beta, ai, human);
-      bestScore = Math.min(beta, score);
+      bestScore = Math.min(bestScore, score);
+      beta = Math.min(bestScore, score);
       if (beta <= alpha) break;
     }
     return bestScore;

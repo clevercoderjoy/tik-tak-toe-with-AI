@@ -16,7 +16,7 @@ Developed by [clevercoderjoy](https://github.com/clevercoderjoy) using **Vite** 
 - 🟰 MiniMax algorithm for unbeatable ai gameplay
 - 🎉 Win / Draw detection with highlights
 - ⚛️ Used React Portal for better modal rendering and DOM isolation
-- 🪝 Custom hook for local storage that updates data automatically when data changes.
+- 🪝 Custom hook for local storage; lazy-initialization, updates automatically on data changes.
 
 ---
 

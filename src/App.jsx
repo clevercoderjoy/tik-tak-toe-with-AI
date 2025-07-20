@@ -13,7 +13,7 @@ function App() {
   const [round, setRound] = useLocalStorageState("round", 1);
   const [playerScores, setPlayerScores] = useLocalStorageState("playerScores", { player1: 0, player2: 0 });
   const [playerChoice, setPlayerChoice] = useLocalStorageState("playerChoice", { player1: null, player2: null });
-  const [isAITurn, setIsAITurn] = useState(false);
+  const [isAiTurn, setIsAiTurn] = useState(false);
   const gameEndedRef = useRef(false);
   const [modalConfig, setModalConfig] = useState({
     show: false,
@@ -98,6 +98,10 @@ function App() {
     }
   }
 
+  const isAiTurnNow = () => {
+    return currentPlayer && playerChoice.player2 === currentPlayer;
+  }
+
   const whoGoesFirst = () => {
     openModal("playerChoice");
   };
@@ -108,17 +112,25 @@ function App() {
     setModalConfig({ ...modalConfig, show: false });
   };
 
-  const handleCellClick = (index) => {
-    if (board[index] === null) {
-      const updatedBoard = [...board];
-      updatedBoard[index] = currentPlayer;
-      setBoard(updatedBoard);
-      localStorage.setItem("gameBoard", updatedBoard);
-      switchTurns();
+  const handleCellClick = (idx) => {
+    if (isAiTurnNow() || gameEndedRef.current || isAiTurn) return;
+    if (board[idx] === null) {
+      const updated = [...board];
+      updated[idx] = currentPlayer;
+      setBoard(updated);
+
+      const winner = checkWin(updated);
+      const draw = checkDraw(updated);
+
+      if (!winner && !draw) {
+        switchTurns();
+        setIsAiTurn(true);
+      }
     } else {
       toast.error("Cell taken!");
     }
   };
+
 
   const switchTurns = () => {
     setCurrentPlayer(prev => (prev === "X" ? "O" : "X"));
@@ -154,6 +166,8 @@ function App() {
     setPlayerChoice({ player1: null, player2: null });
     setCurrentPlayer(null);
     setModalConfig({ ...modalConfig, show: false });
+    gameEndedRef.current = false;
+    setIsAiTurn(false);
     openModal("playerChoice");
   };
 
@@ -172,6 +186,8 @@ function App() {
     setCurrentPlayer(null);
     setModalConfig({ ...modalConfig, show: false });
     setRound(round => round + 1);
+    gameEndedRef.current = false;
+    setIsAiTurn(false);
     openModal("playerChoice");
   }
 
@@ -194,10 +210,9 @@ function App() {
   useEffect(() => {
     if (!playerChoice.player1 || !playerChoice.player2 || !currentPlayer) {
       whoGoesFirst();
+      return;
     }
-  }, []);
 
-  useEffect(() => {
     const winner = checkWin(board);
     const isDraw = checkDraw(board);
 
@@ -219,17 +234,31 @@ function App() {
         });
 
         toast.success(`${winner} wins!`);
-        openModal("gameOver");
       } else {
         toast.success("It's a draw!");
-        openModal("gameOver");
       }
+
+      openModal("gameOver");
     }
-  }, [board]);
+    gameEndedRef.current = false;
+  }, [board, currentPlayer, playerChoice, round]);
 
   useEffect(() => {
-    gameEndedRef.current = false;
-  }, [round]);
+    if (isAiTurn && isAiTurnNow() && !gameEndedRef.current) {
+      const timer = setTimeout(() => {
+        const aiMove = getAiMove(board, playerChoice.player2, playerChoice.player1);
+        if (aiMove !== null) {
+          const updatedBoard = [...board];
+          updatedBoard[aiMove] = playerChoice.player2;
+          setBoard(updatedBoard);
+        }
+        setIsAiTurn(false);
+        switchTurns();
+      }, 200);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isAiTurn]);
 
   useEffect(() => {
     if (modalConfig.show && modalConfig.type === "showScores") {
@@ -242,11 +271,25 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-50 px-4">
-      <h1 className="text-[tomato] text-center font-extrabold text-5xl mb-10 mt-6 drop-shadow-sm">
+      <h1 className="text-[tomato] text-center font-extrabold text-4xl mb-10 mt-6 drop-shadow-sm">
         Tik-Tak-Toe With AI
       </h1>
 
       <h2 className='text-[tomato] text-center font-extrabold text-3xl mb-10 mt-6 drop-shadow-sm'>Round: {round}</h2>
+
+      {(isAiTurnNow() || currentPlayer) && (
+        <div className="flex justify-center w-full mb-4">
+          <div
+            className={`text-center font-bold px-4 py-2 rounded-lg ${isAiTurnNow()
+              ? 'bg-yellow-100 text-yellow-800 border-2 border-yellow-400 shadow-sm'
+              : 'bg-blue-100 text-blue-800 border-2 border-blue-400 shadow-sm'
+              }`}
+            style={{ maxWidth: '300px' }}
+          >
+            {isAiTurnNow() ? 'AI is thinking' : 'You are thinking'}
+          </div>
+        </div>
+      )}
 
       <Board board={board} onCellClick={handleCellClick} />
 
