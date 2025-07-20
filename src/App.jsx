@@ -2,16 +2,18 @@ import { useEffect, useRef, useState } from 'react';
 import { FaRegCircle, FaRegTimesCircle } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import Board from './components/Board';
-import './App.css';
 import CustomModal from './components/CustomModal';
+import useLocalStorageState from './utils/useLocalStorageState';
+import { getAiMove } from './utils/ai';
+import './App.css';
 
 function App() {
-  const [board, setBoard] = useState(Array(9).fill(null));
-  const [currentPlayer, setCurrentPlayer] = useState(null);
-  const [game, setGame] = useState(1);
-  const [playerScores, setPlayerScores] = useState({ player1: 0, player2: 0 });
-  const [playerNames] = useState({ player1: "You", player2: "AI" });
-  const [playerChoice, setPlayerChoice] = useState({ player1: null, player2: null });
+  const [board, setBoard] = useLocalStorageState("board", Array(9).fill(null));
+  const [currentPlayer, setCurrentPlayer] = useLocalStorageState("currentPlayer", null);
+  const [round, setRound] = useLocalStorageState("round", 1);
+  const [playerScores, setPlayerScores] = useLocalStorageState("playerScores", { player1: 0, player2: 0 });
+  const [playerChoice, setPlayerChoice] = useLocalStorageState("playerChoice", { player1: null, player2: null });
+  const [isAITurn, setIsAITurn] = useState(false);
   const gameEndedRef = useRef(false);
   const [modalConfig, setModalConfig] = useState({
     show: false,
@@ -111,6 +113,7 @@ function App() {
       const updatedBoard = [...board];
       updatedBoard[index] = currentPlayer;
       setBoard(updatedBoard);
+      localStorage.setItem("gameBoard", updatedBoard);
       switchTurns();
     } else {
       toast.error("Cell taken!");
@@ -146,7 +149,7 @@ function App() {
 
   const resetEverything = () => {
     setPlayerScores({ player1: 0, player2: 0 });
-    setGame(1);
+    setRound(1);
     setBoard(Array(9).fill(null));
     setPlayerChoice({ player1: null, player2: null });
     setCurrentPlayer(null);
@@ -168,7 +171,7 @@ function App() {
     setPlayerChoice({ player1: null, player2: null });
     setCurrentPlayer(null);
     setModalConfig({ ...modalConfig, show: false });
-    setGame(game => game + 1);
+    setRound(round => round + 1);
     openModal("playerChoice");
   }
 
@@ -181,15 +184,17 @@ function App() {
       <>
         <div className="space-y-2 text-center">
           <h2 className="text-xl font-bold">Score Board</h2>
-          <p className="text-lg">{playerNames.player1}: {playerScores.player1}</p>
-          <p className="text-lg">{playerNames.player2}: {playerScores.player2}</p>
+          <p className="text-lg">You: {playerScores.player1}</p>
+          <p className="text-lg">AI: {playerScores.player2}</p>
         </div>
       </>
     )
   }
 
   useEffect(() => {
-    whoGoesFirst();
+    if (!playerChoice.player1 || !playerChoice.player2 || !currentPlayer) {
+      whoGoesFirst();
+    }
   }, []);
 
   useEffect(() => {
@@ -224,7 +229,7 @@ function App() {
 
   useEffect(() => {
     gameEndedRef.current = false;
-  }, [game]);
+  }, [round]);
 
   useEffect(() => {
     if (modalConfig.show && modalConfig.type === "showScores") {
@@ -241,7 +246,7 @@ function App() {
         Tik-Tak-Toe With AI
       </h1>
 
-      <h2 className='text-[tomato] text-center font-extrabold text-3xl mb-10 mt-6 drop-shadow-sm'>Game: {game}</h2>
+      <h2 className='text-[tomato] text-center font-extrabold text-3xl mb-10 mt-6 drop-shadow-sm'>Round: {round}</h2>
 
       <Board board={board} onCellClick={handleCellClick} />
 

@@ -13,8 +13,10 @@ Developed by [clevercoderjoy](https://github.com/clevercoderjoy) using **Vite** 
 - 💅 Clean and responsive styling with Tailwind CSS
 - 🧠 AI logic with smart move decisions
 - 🔁 Play Again / Reset functionality
+- 🟰 MiniMax algorithm for unbeatable ai gameplay
 - 🎉 Win / Draw detection with highlights
 - ⚛️ Used React Portal for better modal rendering and DOM isolation
+- 🪝 Custom hook for local storage that updates data automatically when data changes.
 
 ---
 
