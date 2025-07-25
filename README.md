@@ -8,14 +8,14 @@ Developed by [clevercoderjoy](https://github.com/clevercoderjoy) using **Vite** 
 
 ## ✨ Features
 
-- 🎯 Play against AI
-- ⚡ Lightning-fast UI with Vite
-- 💅 Clean and responsive styling with Tailwind CSS
-- 🧠 AI logic with smart move decisions
-- 🔁 Play Again / Reset functionality
-- 🟰 MiniMax algorithm for unbeatable ai gameplay
-- 🎉 Win / Draw detection
-- ⚛️ Used React Portal for better modal rendering and DOM isolation
+- 🎯 Play against AI.
+- ⚡ Lightning-fast UI with Vite.
+- 💅 Clean and responsive styling with Tailwind CSS.
+- 🧠 AI logic with smart move decisions.
+- 🔁 Play Again / Reset functionality.
+- 🟰 MiniMax algorithm for unbeatable ai gameplay.
+- 🎉 Win / Draw detection.
+- ⚛️ Used React Portal for better modal rendering and DOM isolation.
 - 🪝 Custom hook for local storage; lazy-initialization, updates automatically on data changes.
 - ⚛️ useReducer for better state management.
 - 🕳️ react portal for better modal rendering.
