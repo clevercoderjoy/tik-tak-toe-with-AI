@@ -13,6 +13,7 @@ export const initialState = {
   },
   gameResult: null,
   scoreUpdated: false,
+  showScores: false,
 };
 
 export function gameReducer(state, action) {
@@ -35,6 +36,8 @@ export function gameReducer(state, action) {
       return { ...state, gameResult: action.payload };
     case "SET_SCORE_UPDATED":
       return { ...state, scoreUpdated: action.payload };
+    case "SET_SHOW_SCORES":
+      return { ...state, showScores: action.payload };
     case "RESET_GAME":
       return { ...initialState };
     default:
