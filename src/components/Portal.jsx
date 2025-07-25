@@ -29,7 +29,7 @@ const Portal = ({ children, onClose }) => {
       onClick={handleBackdropClick}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-[2px] transition-opacity"
     >
-      <div className="relative bg-white rounded-xl shadow-xl p-8 min-w-[320px] max-w-[90%] border border-gray-300">
+      <div className="relative rounded-xl shadow-xl p-8 min-w-[320px] max-w-[90%] border border-gray-300">
         {onClose && (
           <button
             className="absolute top-1 right-1 hover:text-white hover:bg-black rounded-full transition-colors"

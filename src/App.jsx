@@ -48,12 +48,12 @@ function App() {
             {
               label: "O",
               onClick: () => handlePlayerSelection("O"),
-              className: "flex items-center justify-center gap-2 px-2 py-1 border-2 border-gray-800 rounded-lg font-bold text-black hover:bg-black hover:text-white transition-all"
+              className: "button-style"
             },
             {
               label: "X",
               onClick: () => handlePlayerSelection("X"),
-              className: "flex items-center justify-center gap-2 px-2 py-1 border-2 border-gray-800 rounded-lg font-bold text-black hover:bg-black hover:text-white transition-all"
+              className: "button-style"
             }
           ]
         });
@@ -67,12 +67,12 @@ function App() {
             {
               label: "Yes",
               onClick: handleResetConfirm,
-              className: "px-6 py-2 border-2 border-black rounded-lg font-semibold text-black hover:bg-black hover:text-white transition-all"
+              className: "button-style"
             },
             {
               label: "No",
               onClick: () => setModalConfig({ ...modalConfig, show: false }),
-              className: "px-6 py-2 border-2 border-black rounded-lg font-semibold text-black hover:bg-black hover:text-white transition-all"
+              className: "button-style"
             }
           ]
         });
@@ -86,7 +86,7 @@ function App() {
             {
               label: "Yes",
               onClick: handlePlayAgainConfirm,
-              className: "px-6 py-2 border-2 border-black rounded-lg font-semibold text-black hover:bg-black hover:text-white transition-all"
+              className: "button-style"
             },
             {
               label: "No",
@@ -94,7 +94,7 @@ function App() {
                 setModalConfig({ ...modalConfig, show: false });
                 setTimeout(() => setShowScores(true), 100);
               },
-              className: "px-6 py-2 border-2 border-black rounded-lg font-semibold text-black hover:bg-black hover:text-white transition-all"
+              className: "button-style"
             }
           ]
         });
@@ -254,12 +254,12 @@ function App() {
 
 
   return (
-    <div className="min-h-screen bg-gray-50 px-4">
-      <h1 className="text-[tomato] text-center font-extrabold text-4xl mb-10 mt-6 drop-shadow-sm">
+    <div className="min-h-screen px-4 app-bg-img">
+      <h1 className="text-[#00fff7] text-center font-extrabold text-4xl mb-8 mt-8 drop-shadow-lg tracking-wider uppercase">
         Tik-Tak-Toe With AI
       </h1>
 
-      <h2 className='text-[tomato] text-center font-extrabold text-3xl mb-10 mt-6 drop-shadow-sm'>Round: {round}</h2>
+      <h2 className='text-[#ff4ecd] text-center font-extrabold text-3xl mb-10 mt-4 drop-shadow-lg tracking-wider uppercase'>Round: {round}</h2>
 
       {(isAiTurnNow() || currentPlayer) && (
         <div className="flex justify-center w-full mb-4">
@@ -296,7 +296,7 @@ function App() {
                 setShowScores(false);
                 resetEverything();
               },
-              className: "px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-all"
+              className: "button-style"
             }
           ]}
         />
@@ -305,7 +305,7 @@ function App() {
       <div className="text-center mt-10">
         <button
           onClick={resetGame}
-          className="px-6 py-2 mb-4 text-lg font-bold bg-black text-white rounded-lg border-2 border-black hover:bg-[tomato] hover:border-[tomato] transition-all"
+          className="button-style"
         >
           Reset Game
         </button>
