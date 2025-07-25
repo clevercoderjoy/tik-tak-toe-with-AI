@@ -11,7 +11,6 @@ export const initialState = {
     title: "",
     buttons: [],
   },
-  gameResult: null,
   scoreUpdated: false,
   showScores: false,
 };
@@ -32,14 +31,10 @@ export function gameReducer(state, action) {
       return { ...state, isAiTurn: action.payload };
     case "SET_MODAL_CONFIG":
       return { ...state, modalConfig: action.payload };
-    case "SET_GAME_RESULT":
-      return { ...state, gameResult: action.payload };
     case "SET_SCORE_UPDATED":
       return { ...state, scoreUpdated: action.payload };
     case "SET_SHOW_SCORES":
       return { ...state, showScores: action.payload };
-    case "RESET_GAME":
-      return { ...initialState };
     default:
       return state;
   }
