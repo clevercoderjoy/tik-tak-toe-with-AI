@@ -191,7 +191,7 @@ function App() {
     setPlayerChoice({ player1: null, player2: null });
     setCurrentPlayer(null);
     setModalConfig({ ...modalConfig, show: false });
-    setRound(round => round + 1);
+    setRound(round + 1);
     dispatch({ type: "SET_SCORE_UPDATED", payload: false });
     gameEndedRef.current = false;
     setIsAiTurn(false);
